@@ -1,6 +1,6 @@
 const main = document.getElementById("main");
 const addUserBtn = document.getElementById("add__user");
-const dobuleBtn = document.getElementById("dobule");
+const doubleBtn = document.getElementById("double");
 const showMillionBtn = document.getElementById("show__millionaires");
 const sortBtn = document.getElementById("sort");
 const calcWealthBtn = document.getElementById("calc__wealth");
@@ -9,11 +9,6 @@ const calcWealthBtn = document.getElementById("calc__wealth");
 let data = [];
 
 // fetch random user and add money
-
-getRandomUser();
-getRandomUser();
-getRandomUser();
-
 const getRandomUser = async () => {
   const res = await fetch("https://randomuser.me/api/");
   const data = await res.json();
@@ -29,7 +24,50 @@ const getRandomUser = async () => {
   addData(newUser);
 };
 
+//Double money
+
+const doubleMoney = () => {
+  //map through it
+  data = data.map((user) => {
+    //destructing it, accessing user obj. times 2 money
+    return { ...user, money: user.money * 2 };
+  });
+
+  updateDOM();
+};
+
 //Add new obj to data arr.
 const addData = (obj) => {
   data.push(obj);
+
+  updateDOM();
 };
+
+//Update DOM
+const updateDOM = (providedData = data) => {
+  //clear main div
+  main.innerHTML = `<h2><strong>Person</strong> Wealth</h2>`;
+
+  // Foreach METHOD
+  providedData.forEach((item) => {
+    const element = document.createElement("div");
+    element.classList.add("person");
+    element.innerHTML = `<strong>${item.name}</strong> ${formatMoney(
+      item.money
+    )}`;
+    main.appendChild(element);
+  });
+};
+
+//Formate number as money
+const formatMoney = (number) => {
+  return "$" + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};
+
+//Event Listeners
+addUserBtn.addEventListener("click", getRandomUser);
+doubleBtn.addEventListener("click", doubleMoney);
+
+getRandomUser();
+getRandomUser();
+getRandomUser();

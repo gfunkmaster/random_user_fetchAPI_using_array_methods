@@ -24,8 +24,7 @@ const getRandomUser = async () => {
   addData(newUser);
 };
 
-//Double money
-
+//Double money - using MAP method
 const doubleMoney = () => {
   //map through it
   data = data.map((user) => {
@@ -34,6 +33,32 @@ const doubleMoney = () => {
   });
 
   updateDOM();
+};
+
+// Sort by richest using - Sort Method
+const sortByRichest = () => {
+  data.sort((a, b) => b.money - a.money);
+
+  updateDOM();
+};
+
+//Filter only millioner - filter Method
+const showMillioners = () => {
+  data = data.filter((million) => million.money > 1000000);
+
+  updateDOM();
+};
+
+//Calculate the total wealth using - reduce Method
+const calcAllWealth = () => {
+  const wealth = data.reduce((acc, user) => (acc += user.money), 0);
+
+  const wealthEl = document.createElement("div");
+  wealthEl.innerHTML = `<h3>Total Wealth: <strong>${formatMoney(
+    wealth
+  )} </strong></h3>`;
+
+  main.appendChild(wealthEl);
 };
 
 //Add new obj to data arr.
@@ -67,7 +92,9 @@ const formatMoney = (number) => {
 //Event Listeners
 addUserBtn.addEventListener("click", getRandomUser);
 doubleBtn.addEventListener("click", doubleMoney);
-
+sortBtn.addEventListener("click", sortByRichest);
+showMillionBtn.addEventListener("click", showMillioners);
+calcWealthBtn.addEventListener("click", calcAllWealth);
 getRandomUser();
 getRandomUser();
 getRandomUser();
